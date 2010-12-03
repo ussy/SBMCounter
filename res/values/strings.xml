@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SBMCounter</string>
+    <string name="hatebu">Hatena Bookmark</string>
+    <string name="delicious">Delicious</string>
+    <string name="tweetmeme">TweetMeme</string>
+</resources>
