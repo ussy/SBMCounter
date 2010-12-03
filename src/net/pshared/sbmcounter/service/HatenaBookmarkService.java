@@ -39,7 +39,7 @@ public class HatenaBookmarkService extends AbstractBookmarkService implements Bo
     public BookmarkResult getCount(String url) {
         BookmarkResult result = super.getCount(url);
         return result == null ? new BookmarkResult(0, String.format(LINK_URL, url)) : result;
-    };
+    }
 
     BookmarkResult parse(String s) throws Exception {
         if (s == null || "null".equals(s)) {
