@@ -7,12 +7,9 @@ import net.pshared.sbmcounter.R;
 import net.pshared.sbmcounter.model.Bookmark;
 import net.pshared.sbmcounter.model.BookmarkResult;
 import net.pshared.sbmcounter.service.BookmarkService;
-import net.pshared.sbmcounter.service.DeliciousBookmarkService;
-import net.pshared.sbmcounter.service.HatenaBookmarkService;
-import net.pshared.sbmcounter.service.TweetMemeBookmarkService;
+import net.pshared.sbmcounter.service.BookmarkServiceFactory;
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -39,16 +36,11 @@ public class SBMCounterActivity extends Activity {
             return;
         }
 
-        String url = intent.getStringExtra(Intent.EXTRA_TEXT);
+        final String url = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (url == null) {
             finish();
             return;
         }
-
-        List<BookmarkService> services = new ArrayList<BookmarkService>();
-        services.add(new HatenaBookmarkService());
-        services.add(new DeliciousBookmarkService());
-        services.add(new TweetMemeBookmarkService());
 
         ListView listView = (ListView) findViewById(R.id.bookmarks_listView);
         listView.setOnItemClickListener(new OnItemClickListener() {
@@ -58,10 +50,9 @@ public class SBMCounterActivity extends Activity {
                 ListView listView = (ListView) parent;
                 Bookmark bookmark = (Bookmark) listView.getItemAtPosition(position);
                 if (bookmark.getLink() != null) {
-                    Uri url = Uri.parse(bookmark.getLink());
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.setData(url);
+                    Intent intent = new Intent(SBMCounterActivity.this, SBMCommentActivity.class);
+                    intent.putExtra("url", url);
+                    intent.putExtra("id", bookmark.getId());
                     startActivity(intent);
                 }
             }
@@ -69,7 +60,7 @@ public class SBMCounterActivity extends Activity {
 
         List<AsyncTask<String, Integer, BookmarkResult>> tasks = new ArrayList<AsyncTask<String, Integer, BookmarkResult>>();
         final BookmarkArrayAdapter adapter = new BookmarkArrayAdapter(this, R.layout.bookmark_row);
-        for (final BookmarkService service : services) {
+        for (final BookmarkService service : BookmarkServiceFactory.getBookmarkServices()) {
             final Bookmark bookmark = new Bookmark(service.getId(), service.getIcon(this));
             adapter.add(bookmark);
 

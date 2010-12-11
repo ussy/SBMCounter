@@ -12,7 +12,7 @@
             	<data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-
+		<activity android:name=".activity.SBMCommentActivity" android:label="@string/app_name" />
     </application>
     <uses-sdk android:minSdkVersion="4" />
     <uses-permission android:name="android.permission.INTERNET" />

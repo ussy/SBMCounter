@@ -4,4 +4,6 @@
     <string name="hatebu">はてなブックマーク</string>
     <string name="delicious">Delicious</string>
     <string name="tweetmeme">TweetMeme</string>
+    
+    <string name="loading">取得中</string>
 </resources>

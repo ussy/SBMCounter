@@ -4,4 +4,6 @@
     <string name="hatebu">Hatena Bookmark</string>
     <string name="delicious">Delicious</string>
     <string name="tweetmeme">TweetMeme</string>
+    
+    <string name="loading">Now Loading...</string>
 </resources>

@@ -2,10 +2,14 @@ package net.pshared.sbmcounter.service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.pshared.sbmcounter.R;
 import net.pshared.sbmcounter.model.BookmarkResult;
+import net.pshared.sbmcounter.model.CommentResult;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -31,6 +35,11 @@ public class HatenaBookmarkService extends AbstractBookmarkService implements Bo
     }
 
     @Override
+    String getCommentApiUrl(String url) {
+        return getCountApiUrl(url);
+    }
+
+    @Override
     public Bitmap getIcon(Context context) {
         return getIcon(context, "hatebu.png");
     }
@@ -41,7 +50,8 @@ public class HatenaBookmarkService extends AbstractBookmarkService implements Bo
         return result == null ? new BookmarkResult(0, String.format(LINK_URL, url)) : result;
     }
 
-    BookmarkResult parse(String s) throws Exception {
+    @Override
+    BookmarkResult parseCount(String s) throws Exception {
         if (s == null || "null".equals(s)) {
             return null;
         }
@@ -50,5 +60,26 @@ public class HatenaBookmarkService extends AbstractBookmarkService implements Bo
         int count = Integer.parseInt(json.getString("count"));
         String link = String.format(LINK_URL, json.get("url"));
         return new BookmarkResult(count, link);
+    }
+
+    @Override
+    List<CommentResult> parseComments(String response) throws Exception {
+        ArrayList<CommentResult> comments = new ArrayList<CommentResult>();
+        if (response == null || "null".equals(response)) {
+            return comments;
+        }
+
+        JSONObject json = new JSONObject(response);
+        JSONArray bookmarks = json.getJSONArray("bookmarks");
+        for (int i = 0; i < bookmarks.length(); i++) {
+            JSONObject bookmark = bookmarks.getJSONObject(i);
+            String name = bookmark.getString("user");
+            String comment = bookmark.getString("comment");
+            if (comment != null && comment.length() > 0) {
+                comments.add(new CommentResult(name, comment));
+            }
+        }
+
+        return comments;
     }
 }

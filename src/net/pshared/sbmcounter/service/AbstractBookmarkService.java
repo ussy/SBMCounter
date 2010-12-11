@@ -2,8 +2,10 @@ package net.pshared.sbmcounter.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import net.pshared.sbmcounter.model.BookmarkResult;
+import net.pshared.sbmcounter.model.CommentResult;
 import net.pshared.sbmcounter.util.IOUtils;
 
 import org.apache.http.HttpEntity;
@@ -22,7 +24,11 @@ public abstract class AbstractBookmarkService implements BookmarkService {
 
     abstract String getCountApiUrl(String url);
 
-    abstract BookmarkResult parse(String response) throws Exception;
+    abstract String getCommentApiUrl(String url);
+
+    abstract BookmarkResult parseCount(String response) throws Exception;
+
+    abstract List<CommentResult> parseComments(String response) throws Exception;
 
     public AbstractBookmarkService(int id) {
         this.id = id;
@@ -40,7 +46,22 @@ public abstract class AbstractBookmarkService implements BookmarkService {
             String apiUrl = getCountApiUrl(url);
             is = getInputStream(apiUrl);
             byte[] bytes = IOUtils.read(is);
-            return parse(new String(bytes));
+            return parseCount(new String(bytes));
+        } catch (Exception e) {
+            Log.e("error", e.getMessage(), e);
+            return null;
+        } finally {
+            IOUtils.close(is);
+        }
+    }
+
+    public List<CommentResult> getComments(String url) {
+        InputStream is = null;
+        try {
+            String apiUrl = getCommentApiUrl(url);
+            is = getInputStream(apiUrl);
+            byte[] bytes = IOUtils.read(is);
+            return parseComments(new String(bytes));
         } catch (Exception e) {
             Log.e("error", e.getMessage(), e);
             return null;
