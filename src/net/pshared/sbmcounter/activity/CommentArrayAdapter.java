@@ -1,5 +1,6 @@
 package net.pshared.sbmcounter.activity;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import net.pshared.sbmcounter.R;
@@ -31,6 +32,14 @@ public class CommentArrayAdapter extends ArrayAdapter<CommentResult> {
 
         TextView nameView = (TextView) view.findViewById(R.id.commentRow_nameText);
         nameView.setText(comment.getName());
+
+        TextView dateView = (TextView) view.findViewById(R.id.commentRow_dateText);
+        if (comment.getDate() != null) {
+            SimpleDateFormat format = new SimpleDateFormat();
+            dateView.setText(format.format(comment.getDate()));
+        } else {
+            dateView.setText("");
+        }
 
         TextView commentView = (TextView) view.findViewById(R.id.commentRow_commentText);
         commentView.setText(comment.getComment());

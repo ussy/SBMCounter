@@ -18,9 +18,10 @@ public final class R {
         public static final int bookmarkRow_nameText=0x7f050001;
         public static final int bookmarkRow_serviceIcon=0x7f050000;
         public static final int bookmarks_listView=0x7f050003;
-        public static final int commentRow_commentText=0x7f050005;
+        public static final int commentRow_commentText=0x7f050006;
+        public static final int commentRow_dateText=0x7f050005;
         public static final int commentRow_nameText=0x7f050004;
-        public static final int comments_listView=0x7f050006;
+        public static final int comments_listView=0x7f050007;
     }
     public static final class layout {
         public static final int bookmark_row=0x7f030000;

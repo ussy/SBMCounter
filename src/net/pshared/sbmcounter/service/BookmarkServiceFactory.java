@@ -18,7 +18,7 @@ public class BookmarkServiceFactory {
     public static Collection<BookmarkService> getBookmarkServices() {
         return map.values();
     }
-    
+
     public static BookmarkService getBookmarkService(int id) {
         return map.get(id);
     }

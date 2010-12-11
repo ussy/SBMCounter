@@ -30,6 +30,8 @@ public class SBMCommentActivity extends Activity {
 
         final String url = intent.getStringExtra("url");
         final int id = intent.getIntExtra("id", -1);
+        setTitle(id);
+
         AsyncTask<Object, Integer, List<CommentResult>> task = new AsyncTask<Object, Integer, List<CommentResult>>() {
 
             private ProgressDialog dialog;

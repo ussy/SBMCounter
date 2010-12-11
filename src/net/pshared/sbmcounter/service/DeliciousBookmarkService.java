@@ -2,7 +2,10 @@ package net.pshared.sbmcounter.service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import net.pshared.sbmcounter.R;
@@ -15,6 +18,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 public class DeliciousBookmarkService extends AbstractBookmarkService implements BookmarkService {
 
@@ -91,9 +95,16 @@ public class DeliciousBookmarkService extends AbstractBookmarkService implements
             JSONObject bookmark = bookmarks.getJSONObject(i);
             String name = bookmark.getString("a");
             String comment = bookmark.getString("n");
+            String dt = bookmark.getString("dt");
 
             if (comment != null && comment.length() > 0) {
-                comments.add(new CommentResult(name, comment));
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                try {
+                    Date date = format.parse(dt);
+                    comments.add(new CommentResult(name, comment, date));
+                } catch (ParseException e) {
+                    Log.e("error", "parse error", e);
+                }
             }
         }
 

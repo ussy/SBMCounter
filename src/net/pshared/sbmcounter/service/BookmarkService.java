@@ -14,6 +14,6 @@ public interface BookmarkService {
     Bitmap getIcon(Context context);
 
     BookmarkResult getCount(String url);
-    
+
     List<CommentResult> getComments(String url);
 }
